@@ -1,0 +1,24 @@
+#info {
+  text-align: left;
+  color: #ffc;
+  background: #000;
+  font-size: 14px;
+}
+
+#info p {
+  margin-left: 5px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-top: 2px;
+}
+
+#info .data {
+  display: inline-block;
+  width: 300px;
+}
+
+#info .idata {
+  display: inline-block;
+  margin-left: 5px;
+  width: 80px;
+}

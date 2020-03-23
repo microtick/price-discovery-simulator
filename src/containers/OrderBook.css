@@ -1,0 +1,19 @@
+#orderbook {
+  font-size: 8px;
+}
+
+#orderbook h2 {
+  text-align: left;
+}
+
+#orderbook p {
+  text-align: left;
+}
+
+#orderbook input {
+  font-size: 10px;
+}
+
+#orderbook td {
+  text-align: left;
+}

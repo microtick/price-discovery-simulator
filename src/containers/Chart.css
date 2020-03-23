@@ -1,0 +1,122 @@
+#chart {
+  width: 100%;
+  height: 400px;
+  background: #000;
+}
+
+#chart .bid {
+  fill: #0c0;
+}
+
+#chart .ask {
+  fill: #c00;
+}
+
+#chart .grid {
+  stroke: #888;
+  stroke-dasharray: 2,2;
+  stroke-width: 0.75px;
+}
+
+#chart text.grid {
+  stroke: #fff;
+  fill: #000;
+  stroke-width: 1px;
+  stroke-dasharray: none;
+  stroke-opacity: 0.5;
+  font-size: 10px;
+}
+
+#chart .tic {
+  stroke: #fff;
+  stroke-dasharray: none;
+}
+
+#chart .last {
+  fill: #997;
+  stroke: #997;
+  stroke-width: 1px;
+  shape-rendering: crispEdges;
+}
+
+#chart .lastlabel {
+  fill: #997;
+}
+
+#chart .lastlabel.buy {
+  stroke: #060;
+}
+
+#chart .lastlabel.sell {
+  stroke: #a00;
+}
+
+#chart text.lastlabel {
+  stroke: #fff;
+  stroke-width: 0.5px;
+  font-size: 10px;
+}
+
+#chart .separator {
+  stroke: #fff;
+  stroke-width: 2px;
+}
+
+#chart .tick {
+  stroke: #aaa;
+  fill: #aaa;
+}
+
+#chart .bar {
+  stroke: #ffc;
+  stroke-width: 1px;
+  stroke-opacity: 0.7;
+  shape-rendering: crispEdges;
+}
+
+#chart .mtquote.q300 {
+  fill: #00b9ae;
+  shape-rendering: crispEdges;
+}
+
+#chart .mtquote.q900 {
+  fill: #009f93;
+  shape-rendering: crispEdges;
+}
+
+#chart .mtquote.q3600 {
+  fill: #037171;
+  shape-rendering: crispEdges;
+}
+
+#chart .mtquotespot {
+  stroke: #000;
+}
+
+#chart .mtspot {
+  fill: #066;
+  stroke: #066;
+  stroke-width: 1px;
+  shape-rendering: crispEdges;
+}
+
+#chart line.mtquotespot {
+  shape-rendering: crispEdges;
+  stroke-dasharray: 2,2;
+}
+
+#chart .mtlabel {
+  fill: #066;
+}
+
+#chart text.mtlabel {
+  stroke: #ccc;
+  stroke-width: 0.5px;
+  font-size: 10px;
+}
+
+#chart .mthist {
+  stroke: #0a9;
+  fill: #0a9;
+  fill-opacity: 0.8;
+}

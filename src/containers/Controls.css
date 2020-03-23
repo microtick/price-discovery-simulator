@@ -1,0 +1,15 @@
+#controls {
+  background: #000;
+}
+
+#controls button {
+  margin-left: 5px;
+}
+
+#datatype {
+  margin-left: 50px;
+}
+
+#timespans {
+  margin-left: 50px;
+}
