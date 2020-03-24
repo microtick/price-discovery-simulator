@@ -88,7 +88,7 @@ class Chart extends React.Component {
         const x = midx - w
         const price = orderbook.base + (orderbook.refBid - n) / orderbook.ticksPerUnit
         const y = priceToY(price) - yinc / 2
-        const r = <rect key={index} className="bid" x={x} y={y} width={w} height={yinc-1}/>
+        const r = <rect key={index} className="bid" x={x} y={y} width={w} height={yinc > 1 ? yinc-1 : 1}/>
         return r
       })
       var asks = orderbook.asks.map((a, n) => {
@@ -96,7 +96,7 @@ class Chart extends React.Component {
         const w = (midx - 10) * a / maxWidth
         const price = orderbook.base + (orderbook.refAsk + n) / orderbook.ticksPerUnit
         const y = priceToY(price) - yinc / 2
-        const r = <rect key={index} className="ask" x={midx} y={y} width={w} height={yinc-1}/>
+        const r = <rect key={index} className="ask" x={midx} y={y} width={w} height={yinc > 1 ? yinc-1 : 1}/>
         return r
       })
     }
@@ -114,14 +114,17 @@ class Chart extends React.Component {
       <text className={lastclass} x={ob_width + 20} y={ly+3}>{feed.last}</text>
     </g>
     
-    const chartStartTime = feed.time - this.props.windowSize
+    const windowSize = this.props.windowSize
+    const chartStartTime = feed.time - (feed.time % 60) - windowSize
+    const chartStartX = ob_width + 10
+    const chartWidth = chart_width - 20
     /*
     if (feed.ticks.length > 0) {
       var lastX = ob_width
       //var lastY = midy - (feed.ticks[0].tick - orderbook.base) * orderbook.ticksPerUnit * yinc
       var lastY = priceToY(feed.ticks[0].tick)
       var prices = feed.ticks.map((t, n) => {
-        const x = ob_width + (t.time - chartStartTime) * chart_width / this.props.windowSize
+        const x = ob_width + (t.time - chartStartTime) * chart_width / windowSize
         const y = priceToY(t.tick)
         //const y = midy - (t.tick - orderbook.base) * orderbook.ticksPerUnit * yinc 
         const ret = <g key={n}>
@@ -137,16 +140,18 @@ class Chart extends React.Component {
     */
     if (feed.bars1minute.length > 0) {
       var prices = feed.bars1minute.map((b, n) => {
-        const x = ob_width + (b.t - 60 - (chartStartTime - (chartStartTime % 60))) * chart_width / this.props.windowSize
-        const o = priceToY(b.o)
-        const h = priceToY(b.h)
-        const l = priceToY(b.l)
-        const c = priceToY(b.c)
-        const ret = <g key={n}>
-          <line className="bar" x1={x} y1={l} x2={x} y2={h}/>
-          <line className="bar" x1={x} y1={o} x2={x-2} y2={o}/>
-          <line className="bar" x1={x} y1={c} x2={x+2} y2={c}/>
-        </g>
+        if (b.t > chartStartTime) {
+          const x = chartStartX + (b.t - 60 - (chartStartTime - (chartStartTime % 60))) * chartWidth / windowSize
+          const o = priceToY(b.o)
+          const h = priceToY(b.h)
+          const l = priceToY(b.l)
+          const c = priceToY(b.c)
+          var ret = <g key={n}>
+            <line className="bar" x1={x} y1={l} x2={x} y2={h}/>
+            <line className="bar" x1={x} y1={o} x2={x-2} y2={o}/>
+            <line className="bar" x1={x} y1={c} x2={x+2} y2={c}/>
+          </g>
+        }
         return ret
       })
     }
@@ -180,6 +185,7 @@ class Chart extends React.Component {
         xcur += c.width
         return el
       })
+      
       xcur = chart_right
       var puts = mtdurs.reduce((acc, dur) => {
         const orderbook = market.orderbooks[dur]
@@ -205,14 +211,35 @@ class Chart extends React.Component {
         return el
       })
       
+      var mtindspots = mtdurs.reduce((acc, dur) => {
+        const orderbook = market.orderbooks[dur]
+        const spotsfordur = orderbook.base.map((q, n) => {
+          const spot = microtick.activeQuotes[q].spot
+          const y = priceToY(spot)
+          return {
+            y: y
+          }
+        })
+        return acc.concat(spotsfordur)
+      }, []).map((s, n) => {
+        return <line key={n} className="mtindspot" x1={chart_right} y1={s.y} x2={this.bounds.width} y2={s.y}/>
+      })
+      
       if (feed.microtick.length > 0) {
-        const w = 60 * chart_width / this.props.windowSize - 1
+        const w = 60 * chartWidth / windowSize - 1
+        //const halfW = 30 * chartWidth / windowSize + 9 
         var mthist = feed.microtick.map((b, n) => {
-          const x = ob_width + (b.t - 60 - (chartStartTime - (chartStartTime % 60))) * chart_width / this.props.windowSize
-          const h = priceToY(b.h)
-          const l = priceToY(b.l)
-          const wh = l-h < 1 ? 1 : l-h
-          const ret = <rect key={n} className="mthist" x={x-w/2} y={h} width={w} height={wh}/>
+          if (b.t > chartStartTime) {
+            const x = chartStartX + (b.t - 60 - (chartStartTime - (chartStartTime % 60))) * chartWidth / windowSize
+            //const bx = x-w/2 < chartStartX ? chartStartX - 9 : x-w/2 - 1
+            const bx = x-w/2
+            const h = priceToY(b.h)
+            const l = priceToY(b.l)
+            const wh = l-h < 1 ? 1 : l-h
+            //const bw = ((x - w/2) < chartStartX) || ((x + w/2) > chartStartX + chartWidth) ? halfW : w
+            const bw = w
+            var ret = <rect key={n} className="mthist" x={bx} y={h} width={bw} height={wh}/>
+          }
           return ret
         })
       }
@@ -234,6 +261,7 @@ class Chart extends React.Component {
       </g>
       {calls}
       {puts}
+      {mtindspots}
       {grid}
       {lastline}
       {mthist}

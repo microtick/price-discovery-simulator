@@ -100,7 +100,9 @@ class Accounts {
         } else {
           ary = this.state[acct].activeTrades['short']
         }
-        ary.push(id)
+        if (!ary.includes(id)) {
+          ary.push(id)
+        } 
     }
     
     addTradeBacking(acct, backing) {
@@ -117,12 +119,11 @@ class Accounts {
         }
         if (side === 0) {
           var ary = this.state[acct].activeTrades['long']
-          ary.splice(ary.indexOf(id), 1)
-          this.state[acct].activeTrades['long'] = ary
         } else {
           ary = this.state[acct].activeTrades['short']
+        }
+        if (ary.includes(id)) {
           ary.splice(ary.indexOf(id), 1)
-          this.state[acct].activeTrades['short'] = ary
         }
     }
     

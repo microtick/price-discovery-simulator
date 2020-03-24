@@ -135,8 +135,8 @@ const setModelState = newState => {
   state.sizes.cancel.v = parseFloat(newState.cancel_v)
   state.sizes.cancel.s = parseFloat(newState.cancel_s)
   state.sizes.infinity = parseFloat(newState.boundary)
-  state.max.depth = parseFloat(newState.max_depth)
-  state.max.marketTicks = parseFloat(newState.max_ticks)
+  state.max.depth = parseInt(newState.max_depth, 10)
+  state.max.marketTicks = parseInt(newState.max_ticks, 10)
 }
 
 const normal = () => {

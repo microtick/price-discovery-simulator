@@ -51,6 +51,7 @@ class API {
     ob.setCallbacks(this.orderbookCallback.bind(this), this.tickCallback.bind(this))
     this.marketmaker = new MarketMaker(this.mtCallback.bind(this))
     this.state.microtick = this.marketmaker.state
+    this.state.params.mtsetter = this.marketmaker.setState
   }
   
   register(ux) {
@@ -80,26 +81,28 @@ class API {
   timerTick() {
     const now = Date.now()
     
-    const time = this.time
-    this.state.time.elapsedTime = Math.floor(now - this.state.time.startTime) / 1000
+    const elapsedTime = Math.floor(now - this.state.time.startTime) / 1000
+    this.state.time.elapsedTime = elapsedTime
     
-    this.state.time.modelTime = this.state.time.elapsedTime * 5
-    ob.update(this.state.time.modelTime)
-    this.marketmaker.update(this.state.time.modelTime, this.state.feed)
+    const modelTime = elapsedTime * 5
+    this.state.time.modelTime = modelTime
+    
+    ob.update(modelTime)
+    this.marketmaker.update(modelTime, this.state.feed)
     
     if (this.ux !== null) {
       this.ux.update(this.state)
     }
-    while (this.state.feed.ticks.length > 0 && this.state.feed.ticks[0].time < time - WINDOW_SIZE_TICK) {
+    while (this.state.feed.ticks.length > 0 && this.state.feed.ticks[0].time < modelTime - WINDOW_SIZE_TICK) {
       this.state.feed.ticks.shift()
     }
-    while (this.state.feed.bars1minute.length > 0 && this.state.feed.bars1minute[0].t < time + 60 - WINDOW_SIZE_1MIN_BAR) {
+    while (this.state.feed.bars1minute.length > 0 && this.state.feed.bars1minute[0].t < modelTime - WINDOW_SIZE_1MIN_BAR) {
       this.state.feed.bars1minute.shift()
     }
-    while (this.state.feed.bars5minute.length > 0 && this.state.feed.bars5minute[0].t < time + 300 - WINDOW_SIZE_5MIN_BAR) {
+    while (this.state.feed.bars5minute.length > 0 && this.state.feed.bars5minute[0].t < modelTime - WINDOW_SIZE_5MIN_BAR) {
       this.state.feed.bars5minute.shift()
     }
-    while (this.state.feed.microtick.length > 0 && this.state.feed.microtick[0].t < time + 60 - WINDOW_SIZE_1MIN_BAR) {
+    while (this.state.feed.microtick.length > 0 && this.state.feed.microtick[0].t < modelTime - WINDOW_SIZE_1MIN_BAR) {
       this.state.feed.microtick.shift()
     }
   }

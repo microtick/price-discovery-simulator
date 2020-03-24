@@ -40,6 +40,7 @@ class OrderBook extends React.Component {
     }
     return <div id="orderbook">
       <div>
+        <h1>Order Book Parameters</h1>
         <h2>Order Rates - Exponential pdf</h2>
         <table>
           <tbody>
@@ -97,10 +98,10 @@ class OrderBook extends React.Component {
       </div>
       <div>
         <h2>Maximums</h2>
-        <p>Depth: <input id="max_depth" size={5} value={this.state.max_depth} onChange={this.onTodoChange}/></p>
-        <p>Market Ticks: <input id="max_ticks" size={5} value={this.state.max_ticks} onChange={this.onTodoChange}/></p>
+        <p>Depth: <input id="max_depth" size={3} value={this.state.max_depth} onChange={this.onTodoChange}/></p>
+        <p>Market Ticks: <input id="max_ticks" size={3} value={this.state.max_ticks} onChange={this.onTodoChange}/></p>
       </div>
-      <button onClick={this.onSetClick}>Set</button>
+      <button onClick={this.onSetClick}>Set Orderbook Parameters</button>
     </div>
   }
   

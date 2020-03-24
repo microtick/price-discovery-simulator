@@ -1,0 +1,11 @@
+#results {
+  font-size: 12px;
+}
+
+#results table {
+  margin: auto;
+}
+
+#results thead {
+  font-weight: bold;
+}

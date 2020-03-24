@@ -97,6 +97,24 @@ class MarketMaker {
     this.durs = [300, 900, 3600]
     
     this.nextUpdate = 0
+    
+    this.setState = this.setState.bind(this)
+  }
+  
+  setState(newState) {
+    this.state.rates.createQuote = parseFloat(newState.createRate)
+    this.state.rates.updateQuote = parseFloat(newState.updateRate)
+    this.state.rates.placeTrade = parseFloat(newState.tradeRate)
+    this.state.rates.cancelQuote = newState.cancelRate.map(r => parseFloat(r))
+    
+    this.state.sizes.createQuote.v = parseFloat(newState.createSizeV)
+    this.state.sizes.createQuote.s = parseFloat(newState.createSizeS)
+    this.state.sizes.cancelQuote.v = parseFloat(newState.cancelSizeV)
+    this.state.sizes.cancelQuote.s = parseFloat(newState.cancelSizeS)
+    this.state.sizes.placeTrade.v = parseFloat(newState.tradeSizeV)
+    this.state.sizes.placeTrade.s = parseFloat(newState.tradeSizeS)
+    
+    this.state.max.depth = parseInt(newState.maxDepth, 10)
   }
   
   update(now, feed) {

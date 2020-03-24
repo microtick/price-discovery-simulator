@@ -35,7 +35,7 @@
 #chart .last {
   fill: #997;
   stroke: #997;
-  stroke-width: 1px;
+  stroke-width: 2px;
   shape-rendering: crispEdges;
 }
 
@@ -96,8 +96,13 @@
 #chart .mtspot {
   fill: #066;
   stroke: #066;
-  stroke-width: 1px;
+  stroke-width: 2px;
   shape-rendering: crispEdges;
+}
+
+#chart .mtindspot {
+  stroke: #ff8;
+  stroke-opacity: 0.2;
 }
 
 #chart line.mtquotespot {
