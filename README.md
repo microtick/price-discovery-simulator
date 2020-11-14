@@ -1,68 +1,35 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Microtick price discovery simulation
 
-## Available Scripts
+This codebase is a simulator that allows market makers or researchers to fine-tune market conditions to experiment with a theoretical model of how price discovery might operate in the real world.
 
-In the project directory, you can run:
+The mathematical approach used for the order book (left hand side of the real-time chart) is based on this 2013 paper: https://arxiv.org/abs/1010.5136.
+
+![Order Book Modeling](abstract.png)
+
+Using the paper's approach for order rates as a model, the parameters for Microtick's Shelling point-based price discovery were created on the right hand side of the page.
+
+## Running the simulation
 
 ### `npm start`
 
 Runs the app in the development mode.<br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+At the initial start the order book needs to run for 120 seconds to generate enough information (i.e. volatility) for the Microtick parameters to start to operate.  As the simulation runs, the price history gets better leading to a more refined set of estimate for the Microtick quotes.
 
-### `npm test`
+On the right, the quotes are divided into three shades of color.  The lightest correspond to 5-minute quotes, then 15-minute and 1-hour.  The yellow horizontal lines correspond to individual quote spots, with the consensus being the weighted average of all the quotes.
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Things to observe
 
-### `npm run build`
+The Microtick spot price is a weighted average, and as such will lag the order book price.  Alternatively, when the order book price mean-reverts, the Microtick price can be considered to be a leading price as well.
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Being able to trade and hedge against a moving average price is unique in the financial markets.  It gives traders the ability and motive to sell into a price pump or buy into a selloff, as long as they are confident prices will mean revert in the time frame of the options they are trading on the Microtick market.  As such, the Microtick market tends to offset the order book price, bringing a price-stabilizing incentive into market arbitrage interplay.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+## Things to try
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1.  Start / Stop the simulation at any time using the buttons at the top.  The simulation runs 100% locally using random input so your simulation run will only affect your local instance.
 
-### `npm run eject`
+2.  Increase the order book market order size.  Change the "Market | V" parameter from the default 4 to 5 or 6 and click "Set Orderbook Parameters".  This will increase the size of market orders on the order book simulation side, while keeping the limits the same.  The result will be an increase in volatility that over time will be reflected in the Microtick option volatility estimates.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+3.  Observe the Market Maker / Trader profitabilies in the table.  Note that the default settings give a slight edge to the market makers - while individual trades can be profitable for the traders, over time the market maker tends to earn back the premium using the default parameters.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
