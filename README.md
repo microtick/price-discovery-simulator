@@ -1,5 +1,7 @@
 # Microtick price discovery simulation
 
+![Microtick Price Discovery Simulator](screenshot.png)
+
 This codebase is a simulator that allows market makers or researchers to fine-tune market conditions to experiment with a theoretical model of how price discovery might operate in the real world.
 
 The mathematical approach used for the order book (left hand side of the real-time chart) is based on this 2013 paper: https://arxiv.org/abs/1010.5136.
