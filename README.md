@@ -12,6 +12,12 @@ Using the paper's approach for order rates as a model, the parameters for Microt
 
 ## Running the simulation
 
+You will need to have node.js installed. The easiest way to do this is to install "nvm", the node version manager. https://github.com/nvm-sh/nvm
+
+### `npm install`
+
+Installs the packages necessary to run the simulator.
+
 ### `npm start`
 
 Runs the app in the development mode.<br />
